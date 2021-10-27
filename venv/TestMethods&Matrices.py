@@ -1,5 +1,6 @@
 from main import Matrices
 
+
 matrix1 = Matrices(3, 3)
 matrix1.writeMatrix()
 matrix2 = Matrices(3, 3)
