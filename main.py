@@ -2,25 +2,24 @@ import copy
 import random
 from abc import ABC
 
- 
+
 class Menu(ABC):
     action = int
 
     @staticmethod
     def MainMenu():
-        print("1. Add matrices")
-        print("2. Sub matrices")
-        print("3. Multiply matrices")
-        print("4. Transpose matrix")
-        print("5. Multiply matrix to a constant")
-        print("6. Inverse matrix")
-        print("0. Exit")
+        print("1. Сложение матриц")
+        print("2. Вычитание матриц")
+        print("3. Умножение матриц")
+        print("4. Транспонирование матриц")
+        print("5. Умножение матриц на число")
+        print("0. Выход")
 
     @staticmethod
     def InputMatrix1():
         print("Введите количество строк матрицы 1:")
         cntlines = Expectation.int_expect()
-        print("Введите количество столбцов матрицы 2:")
+        print("Введите количество столбцов матрицы 1:")
         cntcolumns = Expectation.int_expect()
         matrix1 = Matrices(cntlines, cntcolumns)
         matrix1.writeMatrix()
@@ -28,7 +27,7 @@ class Menu(ABC):
 
     @staticmethod
     def InputMatrix2():
-        print("Введите количество строк матрицы 1:")
+        print("Введите количество строк матрицы 2:")
         cntlines = Expectation.int_expect()
         print("Введите количество столбцов матрицы 2:")
         cntcolumns = Expectation.int_expect()
@@ -39,18 +38,22 @@ class Menu(ABC):
 
     @staticmethod
     def ActionMenu():
-        matrix1 = Menu.InputMatrix1()
-        matrix2 = Menu.InputMatrix2()
         Menu.MainMenu()
         print("Введите номер действия: ")
         action = Expectation.int_expect()
+        print("Введите матрицы:")
+        matrix1 = Menu.InputMatrix1()
+        matrix2 = Menu.InputMatrix2()
         while action != 0:
             if action == 1:
-                add = matrix1 + matrix2
+                matrix1 + matrix2
+                break
             elif action == 2:
-                sub = matrix1 - matrix2
+                matrix1 - matrix2
+                break
             elif action == 3:
-                mul = matrix1 * matrix2
+                matrix1 * matrix2
+                break
             elif action == 4:
                 print("Какую матрицу вы хотите транспонировать?")
                 value = Expectation.int_expect()
@@ -60,7 +63,7 @@ class Menu(ABC):
                     matrix2.TranspositionMatrix()
                 else:
                     print("У вас весего лишь две матрицы. Введите 1 или 2!")
-                    break
+                break
             elif action == 5:
                 print("Какую матрицу вы хотите умножить на число?")
                 value = Expectation.int_expect()
@@ -70,8 +73,7 @@ class Menu(ABC):
                     matrix2.mulOnConstant()
                 else:
                     print("У вас весего лишь две матрицы. Введите 1 или 2!")
-                    break
-
+                break
 
 
 class Expectation(ABC):
