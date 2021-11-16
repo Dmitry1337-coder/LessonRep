@@ -2,76 +2,88 @@ import copy
 import random
 from abc import ABC
 
- 
+
 class Menu(ABC):
     action = int
 
     @staticmethod
     def MainMenu():
-        print("1. Add matrices")
-        print("2. Sub matrices")
-        print("3. Multiply matrices")
-        print("4. Transpose matrix")
-        print("5. Multiply matrix to a constant")
-        print("6. Inverse matrix")
-        print("0. Exit")
+        print("1. Сложение матриц")
+        print("2. Вычитание матриц")
+        print("3. Умножение матриц")
+        print("4. Транспонирование матриц")
+        print("5. Умножение матриц на число")
+        print("0. Выход")
 
     @staticmethod
-    def InputMatrix1():
-        print("Введите количество строк матрицы 1:")
-        cntlines = Expectation.int_expect()
-        print("Введите количество столбцов матрицы 2:")
-        cntcolumns = Expectation.int_expect()
-        matrix1 = Matrices(cntlines, cntcolumns)
-        matrix1.writeMatrix()
-        return matrix1
-
-    @staticmethod
-    def InputMatrix2():
-        print("Введите количество строк матрицы 1:")
-        cntlines = Expectation.int_expect()
-        print("Введите количество столбцов матрицы 2:")
-        cntcolumns = Expectation.int_expect()
-        matrix2 = Matrices(cntlines, cntcolumns)
-        matrix2.writeMatrix()
-        return matrix2
-
+    def InputMatrix():
+        print("Введите количество строк матрицы:")
+        count_lines = Expectation.int_expect()
+        print("Введите количество столбцов матрицы:")
+        count_columns = Expectation.int_expect()
+        matrix = Matrices(count_lines, count_columns)
+        matrix.writeMatrix()
+        return matrix
 
     @staticmethod
     def ActionMenu():
-        matrix1 = Menu.InputMatrix1()
-        matrix2 = Menu.InputMatrix2()
-        Menu.MainMenu()
-        print("Введите номер действия: ")
-        action = Expectation.int_expect()
-        while action != 0:
+        while True:
+            Menu.MainMenu()
+            print("Введите номер действия: ")
+            action = Expectation.int_expect()
             if action == 1:
-                add = matrix1 + matrix2
+                Menu.actionAddition()
             elif action == 2:
-                sub = matrix1 - matrix2
+                Menu.actionSubtraction()
             elif action == 3:
-                mul = matrix1 * matrix2
+                Menu.actionMultiplication()
             elif action == 4:
-                print("Какую матрицу вы хотите транспонировать?")
-                value = Expectation.int_expect()
-                if value == 1:
-                    matrix1.TranspositionMatrix()
-                if value == 2:
-                    matrix2.TranspositionMatrix()
-                else:
-                    print("У вас весего лишь две матрицы. Введите 1 или 2!")
-                    break
+                Menu.actionTranspose()
             elif action == 5:
-                print("Какую матрицу вы хотите умножить на число?")
-                value = Expectation.int_expect()
-                if value == 1:
-                    matrix1.mulOnConstant()
-                if value == 2:
-                    matrix2.mulOnConstant()
-                else:
-                    print("У вас весего лишь две матрицы. Введите 1 или 2!")
-                    break
+                Menu.actionMulConstant()
+            elif action == 0:
+                break
+            else:
+                print("Нет такого действия!")
+            print("Хотите вернуться в главное меню?(y/n)")
+            flag = Expectation.str_expect()
+            if flag == 'y':
+                continue
+            elif flag == 'n':
+                break
+            else:
+                print("Вы не ввели символы 'y' или 'n', поэтому вы были переведеы в главное меню.")
+                continue
 
+    @staticmethod
+    def actionAddition():
+        print("Введите матрицы, которые вы хотите сложить:")
+        matrix1 = Menu.InputMatrix()
+        matrix2 = Menu.InputMatrix()
+        matrix1 + matrix2
+
+    @staticmethod
+    def actionSubtraction():
+        print("Введите матрицы, которые вы хотите вычесть друг из друга:")
+        matrix1 = Menu.InputMatrix()
+        matrix2 = Menu.InputMatrix()
+        matrix1 - matrix2
+
+    @staticmethod
+    def actionMultiplication():
+        matrix1 = Menu.InputMatrix()
+        matrix2 = Menu.InputMatrix()
+        matrix1 * matrix2
+
+    @staticmethod
+    def actionTranspose():
+        matrix = Menu.InputMatrix()
+        matrix.transpositionMatrix()
+
+    @staticmethod
+    def actionMulConstant():
+        matrix = Menu.InputMatrix()
+        matrix.mulOnConstant()
 
 
 class Expectation(ABC):
@@ -89,137 +101,115 @@ class Expectation(ABC):
                 expectation = True
         return value
 
+    @staticmethod
+    def str_expect():
+        expectation = True
+        value = 0
+        while expectation:
+            try:
+                expectation = False
+                value = str(input())
+            except ValueError:
+                print("Требуется символьное значение!")
+                expectation = True
+        return value
+
 
 class Matrices:
-    def __init__(self, cntlines, cntcolumns):
-        self.cntlines = cntlines
-        self.cntcolumns = cntcolumns
-        self.matrix = [[0 for j in range(cntcolumns)] for i in range(cntlines)]
+    def __init__(self, count_lines, count_columns):
+        self.count_lines = count_lines
+        self.count_columns = count_columns
+        self.matrix = [[0 * i * j for j in range(count_columns)] for i in range(count_lines)]
 
-    def ShowMatrix(self):
+    def showMatrix(self):
         for i in self.matrix:
             print(i)
 
     def writeMatrix(self):
         print(f"\nВведите матрицу(по элементно):")
-        list = self.matrix.copy()
-        for i in range(self.cntlines):
+        list_matrix = self.matrix.copy()
+        for i in range(self.count_lines):
             print(f"Введите {i + 1} строку:")
-            for j in range(self.cntcolumns):
-                list[i][j] = Expectation.int_expect()
-        self.matrix = list
+            for j in range(self.count_columns):
+                list_matrix[i][j] = Expectation.int_expect()
+        self.matrix = list_matrix
 
     def __add__(self, other):
-        if (self.cntlines == other.cntlines) and \
-                (self.cntcolumns == other.cntcolumns) and \
+        if (self.count_lines == other.count_lines) and \
+                (self.count_columns == other.count_columns) and \
                 (isinstance(other, Matrices)):
-            list = [[0 for i in range(self.cntcolumns)] for j in range(self.cntlines)]
-            for i in range(self.cntlines):
-                for j in range(self.cntcolumns):
-                    list[i][j] = self.matrix[i][j] + other.matrix[i][j]
-                print(list[i])
-            return list
+            list_matrix = [[0 * i * j for i in range(self.count_columns)] for j in range(self.count_lines)]
+            for i in range(self.count_lines):
+                for j in range(self.count_columns):
+                    list_matrix[i][j] = self.matrix[i][j] + other.matrix[i][j]
+                print(list_matrix[i])
+            return list_matrix
         else:
             print("Ошибка! Кол-во столбцов и строк в матрицах не совпадает!")
 
     def __sub__(self, other):
-        if (self.cntlines == other.cntlines) and \
-                (self.cntcolumns == other.cntcolumns) and \
+        if (self.count_lines == other.count_lines) and \
+                (self.count_columns == other.count_columns) and \
                 (isinstance(other, Matrices)):
-            list = [[0 for i in range(self.cntcolumns)] for j in range(self.cntlines)]
-            for i in range(self.cntlines):
-                for j in range(self.cntcolumns):
-                    list[i][j] = self.matrix[i][j] - other.matrix[i][j]
-                print(list[i])
-            return list
+            list_matrix = [[0 * i * j for i in range(self.count_columns)] for j in range(self.count_lines)]
+            for i in range(self.count_lines):
+                for j in range(self.count_columns):
+                    list_matrix[i][j] = self.matrix[i][j] - other.matrix[i][j]
+                print(list_matrix[i])
+            return list_matrix
         else:
             print("Ошибка! Кол-во столбцов и строк в матрицах не совпадает!")
 
     def mulOnConstant(self):
+        print("Введите число, на которое хотите умножить матрицу:")
         number = Expectation.int_expect()
-        list = [[0 for i in range(self.cntcolumns)] for j in range(self.cntlines)]
-        for i in range(self.cntlines):
-            for j in range(self.cntcolumns):
-                list[i][j] = self.matrix[i][j] * number
-            print(list[i])
+        list_matrix = [[0 * i * j for i in range(self.count_columns)] for j in range(self.count_lines)]
+        for i in range(self.count_lines):
+            for j in range(self.count_columns):
+                list_matrix[i][j] = self.matrix[i][j] * number
+            print(list_matrix[i])
 
     def __mul__(self, other):
-        list = [[0 for i in range(other.cntcolumns)] for j in range(self.cntlines)]
-        if (isinstance(other, Matrices) and (self.cntcolumns == other.cntlines)):
-            for i in range(self.cntlines):
-                for j in range(other.cntcolumns):
-                    for k in range(self.cntcolumns):
-                        list[i][j] += self.matrix[i][k] * other.matrix[k][j]
-                print(list[i])
-            return list
-        else:
+        list_matrix = [[0 * i * j for i in range(other.count_columns)] for j in range(self.count_lines)]
+        if not isinstance(other, Matrices) or self.count_columns != other.count_lines:
             print('Матрицы нельзя умножить,т.к. кол-во эл. в столбце 1-ой матрицы, не соотв. кол-ву строк эл. во 2-ой')
+        else:
+            for i in range(self.count_lines):
+                for j in range(other.count_columns):
+                    for k in range(self.count_columns):
+                        list_matrix[i][j] += self.matrix[i][k] * other.matrix[k][j]
+                print(list_matrix[i])
+            return list_matrix
 
-    def TranspositionMatrix(self):
-        list = [[0 for j in range(self.cntlines)] for i in range(self.cntcolumns)]
-        for i in range(self.cntcolumns):
-            for j in range(self.cntlines):
-                list[i][j] = self.matrix[j][i]
-            print(list[i])
+    def transpositionMatrix(self):
+        list_matrix = [[0 * i * j for j in range(self.count_lines)] for i in range(self.count_columns)]
+        for i in range(self.count_columns):
+            for j in range(self.count_lines):
+                list_matrix[i][j] = self.matrix[j][i]
+            print(list_matrix[i])
 
-    def ExponentiationMatrix(self):
+    def exponentiationMatrix(self):
         num = Expectation.int_expect()
-        if self.cntlines == self.cntcolumns:
-            object = copy.copy(self)
+        if self.count_lines == self.count_columns:
+            other = copy.copy(self)
             for i in range(num - 1):
                 print(f"{i + 1}-й шаг:")
-                object.matrix = self*object
+                other.matrix = self*other
             print("Результат возведения в степень")
-            object.ShowMatrix()
+            other.showMatrix()
         else:
             print("Чтобы возвести матрицу в степень, она должна быть квадратной!")
 
-    def WriteMatrixToFile(self):
-        file = open(f"{random.randint(0, 10000)} matrix.txt", 'a')
-        for i in range(self.cntlines):
-            for j in range(self.cntcolumns):
-                file.write(str(self.matrix[i][j]) + ' ')
-            file.write('\n')
-        file.close()
-
-    def WritingFromFile(self):
-        file = open(f"123 matrices.txt", "r+")
-        arr_1 = []
-        arr = file.readlines()
-        for str in arr:
-            arr_1.append(str.split('.'))
-        for str in arr_1:
-            if str[0] == "matrix":
-                print("Матрица № -", str[1])
-            print(str)
-        print("Введите номер матрицы, которую хотите использовать:")
-        number = Expectation.int_expect()
-        print(number)
-        counter = 0
-        cnt = 0
-        print(arr, '\n')
-        print(arr_1)
-        for str in arr_1:
-            flag = False
-            if number == str[1] and str[0] == 'matrix':
-                print("матрица успешно выбрана")
-                self.cntlines = int(str[2])
-                self.cntcolumns = int(str[3])
-                flag = True
-                counter = self.cntlines
-                cnt = copy.copy(counter)
-            list = [[0 for i in range(self.cntcolumns)] for j in range(self.cntlines)]
-            if flag and counter > 0:
-                counter -= 1
-                for j in range(self.cntlines):
-                    list[cnt-counter][j] = int(str[j])
-        self.ShowMatrix()
-
-
-
+    def writeMatrixToFile(self):
+        file_name = open(f"{random.randint(0, 10000)} matrix.txt", 'a')
+        for i in range(self.count_lines):
+            for j in range(self.count_columns):
+                file_name.write(str(self.matrix[i][j]) + ' ')
+            file_name.write('\n')
+        file_name.close()
 
 # наш скрипт
 
+
 if __name__ == '__main__':
     Menu.ActionMenu()
-
