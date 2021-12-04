@@ -1,7 +1,7 @@
 import copy
 import random
 
-from Class_Expectation import Expectation
+from Class_Exception import ExceptionClass
 
 
 class Matrices:
@@ -17,7 +17,7 @@ class Matrices:
     def writeMatrix(self):
         print("Введите матрицу:")
         for i in range(self.count_lines):
-            self.matrix[i] = Expectation.list_expect(self.count_columns)
+            self.matrix[i] = ExceptionClass.list_expect(self.count_columns)
 
     def __add__(self, other):
         if (self.count_lines == other.count_lines) and \
@@ -27,8 +27,8 @@ class Matrices:
             for i in range(self.count_lines):
                 for j in range(self.count_columns):
                     list_matrix[i][j] = self.matrix[i][j] + other.matrix[i][j]
-                print(list_matrix[i])
-            return list_matrix
+                #print(list_matrix[i])
+            return list_matrix #list_matrix[i]
         else:
             print("Ошибка! Кол-во столбцов и строк в матрицах не совпадает!")
 
@@ -40,8 +40,8 @@ class Matrices:
             for i in range(self.count_lines):
                 for j in range(self.count_columns):
                     list_matrix[i][j] = self.matrix[i][j] - other.matrix[i][j]
-                print(list_matrix[i])
-            return list_matrix
+                #print(list_matrix[i])
+            return list_matrix #list_matrix
         else:
             print("Ошибка! Кол-во столбцов и строк в матрицах не совпадает!")
 
@@ -50,7 +50,7 @@ class Matrices:
         for i in range(self.count_lines):
             for j in range(self.count_columns):
                 list_matrix[i][j] = self.matrix[i][j] * number
-            print(list_matrix[i])
+            #print(list_matrix[i])
 
     def __mul__(self, other):
         list_matrix = self.__null_Matrix(self.count_lines, other.count_columns)
@@ -64,11 +64,12 @@ class Matrices:
             return list_matrix
 
     def transpositionMatrix(self):
-        list_matrix = self.__null_Matrix(self.count_lines, self.count_columns)
+        list_matrix = self.__null_Matrix(self.count_columns, self.count_lines)
         for i in range(self.count_columns):
             for j in range(self.count_lines):
                 list_matrix[i][j] = self.matrix[j][i]
-            print(list_matrix[i])
+            #print(list_matrix[i])
+        return list_matrix
 
     def exponentiationMatrix(self, number):
         if self.count_lines == self.count_columns:

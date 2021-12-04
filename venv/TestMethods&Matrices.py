@@ -1,4 +1,6 @@
-from main import Matrices
+from Class_Matrices import Matrices
+from Class_Exception import ExceptionClass
+from Class_Menu import list_output
 
 
 matrix1 = Matrices(3, 3)
@@ -10,21 +12,25 @@ matrix1.showMatrix()
 print("Матрица №2:")
 matrix2.showMatrix()
 print("\nМетод умножения функции на число:")
-matrix1.mulOnConstant()
+print("Введите число, на которое умножается матрица:")
+number = ExceptionClass.int_expect()
+list_output(matrix1.mulOnConstant(number))
 print("\nМетод сложения матриц:")
-matrix2+matrix1
+list_output(matrix2+matrix1)
 print("\nМетод разности матриц:")
-matrix2-matrix1
+list_output(matrix2-matrix1)
 print("\nМетод умножения матриц друг на друга:")
-matrix2*matrix1
+list_output(matrix2*matrix1)
 print("\nМетод умножения с поменянными местами матрицами:")
-matrix1*matrix2
+list_output(matrix1*matrix2)
 print("\nМетод возведения матрицы в степень:")
-matrix1.exponentiationMatrix()
+print("Введите число для возведения матрицы в степень:")
+number = ExceptionClass.int_expect()
+list_output(matrix1.exponentiationMatrix(number))
 print("\nМетод транспонирования для матрицы 1:")
-matrix1.transpositionMatrix()
+list_output(matrix1.transpositionMatrix())
 print("\nМетод транспонирования для матрицы 2:")
-matrix2.transpositionMatrix()
+list_output(matrix2.transpositionMatrix())
 print("Проверка на изменение начальных матриц:")
 print("Матрица №1:")
 matrix1.showMatrix()

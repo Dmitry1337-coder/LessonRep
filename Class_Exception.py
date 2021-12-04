@@ -1,7 +1,7 @@
 from abc import ABC
 
 
-class Expectation(ABC):
+class ExceptionClass(ABC):
 
     @staticmethod
     def int_expect():

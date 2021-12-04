@@ -1,7 +1,7 @@
 from abc import ABC
 
 from Class_Matrices import Matrices
-from Class_Expectation import Expectation
+from Class_Exception import ExceptionClass
 
 
 def list_output(list_):
@@ -30,7 +30,7 @@ class Menu(ABC):
         while True:
             try:
                 print("Введите размер матрицы: <кол-во_строк> <кол-во_столбцов>:")
-                size_matrix = Expectation.list_expect(2)
+                size_matrix = ExceptionClass.list_expect(2)
                 count_lines = size_matrix[0]
                 count_columns = size_matrix[1]
                 if (count_lines == 0 and count_columns != 0) or \
@@ -39,7 +39,7 @@ class Menu(ABC):
                     raise ValueError
                 if count_lines*count_columns >= 30:
                     print("Размер матрицы слишком велик. Правильно ли вы ввели данные?(y/n)")
-                    if Expectation.str_expect() != 'y':
+                    if ExceptionClass.str_expect() != 'y':
                         print("Попробуйте снова!")
                         continue
                 object_matrix = Matrices(count_lines, count_columns)
@@ -54,7 +54,7 @@ class Menu(ABC):
         while True:
             Menu.MainMenu()
             print("Введите номер действия: ")
-            action = Expectation.int_expect()
+            action = ExceptionClass.int_expect()
             if action == 1:
                 Menu.actionAddition()
             elif action == 2:
@@ -72,7 +72,7 @@ class Menu(ABC):
             else:
                 print("Нет такого действия!")
             print("Хотите вернуться в главное меню?(y/n)")
-            flag = Expectation.str_expect()
+            flag = ExceptionClass.str_expect()
             if flag == 'y':
                 continue
             elif flag == 'n':
@@ -114,7 +114,7 @@ class Menu(ABC):
         print("Введите матрицу, которая умножится на число:")
         matrix = Menu.InputMatrix()
         print("Введиет число, на которое уможается матрица:")
-        number = Expectation.int_expect()
+        number = ExceptionClass.int_expect()
         matrix.mulOnConstant(number)
 
     @staticmethod
@@ -122,5 +122,5 @@ class Menu(ABC):
         print("Введите матрицу, которая будет возведена в степень")
         matrix = Menu.InputMatrix()
         print("Введите степень возводимой матрицы:")
-        number = Expectation.int_expect()
+        number = ExceptionClass.int_expect()
         list_output(matrix.exponentiationMatrix(number))
